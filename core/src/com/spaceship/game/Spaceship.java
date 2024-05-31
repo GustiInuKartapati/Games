@@ -89,6 +89,7 @@ public class Spaceship extends ApplicationAdapter {
 			ship.update(deltaTime, screenWidth, screenHeight);
 
 			for (meteor m : meteors) {
+				m.setSpeed(100 + gameTime * 10);
 				m.update(deltaTime, screenWidth, screenHeight);
 			}
 
@@ -161,7 +162,7 @@ public class Spaceship extends ApplicationAdapter {
 			batch.begin();
 			batch.draw(ship.getTexture(), ship.getX(), ship.getY(), ship.getWidth() / 2, ship.getHeight() / 2, ship.getWidth(), ship.getHeight(), 1, 1, ship.getRotation(), 0, 0, ship.getTexture().getWidth(), ship.getTexture().getHeight(), false, false);
 			for (meteor m : meteors) {
-				batch.draw(m.getTexture(), m.getX(), m.getY(), m.getWidth(), m.getHeight());
+				batch.draw(m.getTexture(), m.getX(), m.getY(), m.getWidth() / 2, m.getHeight() / 2, m.getWidth(), m.getHeight(), 1, 1, m.getRotation(), 0, 0, m.getTexture().getWidth(), m.getTexture().getHeight(), false, false);
 			}
 			batch.end();
 		}

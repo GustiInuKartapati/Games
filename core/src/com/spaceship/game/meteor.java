@@ -1,5 +1,7 @@
 package com.spaceship.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +12,10 @@ public class meteor {
     public Texture texture;
     private float width;
     private float height;
+    private float sizeFactor;
+    private float rotation;
+    private float rotationSpeed;
+
 
     public meteor(Texture texture) {
         this.texture = texture;
@@ -18,6 +24,14 @@ public class meteor {
         // Manually specify dimensions
         this.width = 32;  // Adjust as needed
         this.height = 32; // Adjust as needed
+
+        Random rand = new Random();
+        this.sizeFactor = 0.5f + rand.nextFloat() * 1.5f;
+        this.width *= sizeFactor;
+        this.height *= sizeFactor;
+
+        this.rotation = 0;
+        this.rotationSpeed = (float) Math.random() * 360 - 180;
     }
 
     public Rectangle getBounds() {
@@ -48,6 +62,11 @@ public class meteor {
         position.set(x, y);
     }
 
+    public void setSpeed(float speed) {
+        float angle = velocity.angleRad();
+        velocity.set((float) (speed * Math.cos(angle)), (float) (speed * Math.sin(angle)));
+    }
+
     public void init(float screenWidth, float screenHeight) {
         float randomX = (float) Math.random() * screenWidth;
         float randomY = (float) Math.random() * 2 * screenHeight - screenHeight;
@@ -66,5 +85,19 @@ public class meteor {
         if (position.x > screenWidth + width) position.x = -width;
         if (position.y < -height) position.y = screenHeight + height;
         if (position.y > screenHeight + height) position.y = -height;
+
+        updateRotation();
+
+        rotation += rotationSpeed * deltaTime;
+    }
+
+    public void updateRotation() {
+        if (velocity.x != 0 || velocity.y != 0) {
+            rotation = (float) Math.atan2(velocity.y, velocity.x) * 180 / (float) Math.PI;
+        }
+    }
+
+    public float getRotation() {
+        return rotation;
     }
 }

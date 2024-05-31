@@ -30,9 +30,11 @@ public class Spaceship extends ApplicationAdapter {
 	private boolean isGamePaused;
 	private float gameTime = 0;
 	private Label timerLabel;
+	private Texture backgroundTexture;
 
     @Override
     public void create() {
+		backgroundTexture = new Texture("background.jpg");
         batch = new SpriteBatch();
         ship = new ship(new Texture("ship.png"));
         meteors = new ArrayList<>();
@@ -160,6 +162,7 @@ public class Spaceship extends ApplicationAdapter {
 
 			ScreenUtils.clear(1, 0, 0, 1);
 			batch.begin();
+			batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
 			batch.draw(ship.getTexture(), ship.getX(), ship.getY(), ship.getWidth() / 2, ship.getHeight() / 2, ship.getWidth(), ship.getHeight(), 1, 1, ship.getRotation(), 0, 0, ship.getTexture().getWidth(), ship.getTexture().getHeight(), false, false);
 			for (meteor m : meteors) {
 				batch.draw(
@@ -184,6 +187,7 @@ public class Spaceship extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+		backgroundTexture.dispose();
 
 		// stage.dispose();
 		// skin.dispose();

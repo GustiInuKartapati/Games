@@ -43,6 +43,8 @@ public class Spaceship extends ApplicationAdapter {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
+		ship.setPosition(screenWidth / 2 - ship.getWidth() / 2, screenHeight / 2 - ship.getHeight() / 2);
+
 		stage = new Stage();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		Gdx.input.setInputProcessor(stage);

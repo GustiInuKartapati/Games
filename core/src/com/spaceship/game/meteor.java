@@ -1,7 +1,6 @@
 package com.spaceship.game;
 
 import java.util.Random;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +14,6 @@ public class meteor {
     private float sizeFactor;
     private float rotation;
     private float rotationSpeed;
-
 
     public meteor(Texture texture) {
         this.texture = texture;
@@ -31,7 +29,7 @@ public class meteor {
         this.height *= sizeFactor;
 
         this.rotation = 0;
-        this.rotationSpeed = (float) Math.random() * 360 - 180;
+        this.rotationSpeed = 50 + rand.nextFloat() * 100; // Initial rotation speed
     }
 
     public Rectangle getBounds() {
@@ -88,13 +86,14 @@ public class meteor {
 
         updateRotation();
 
+        // Update rotation based on rotation speed and deltaTime
         rotation += rotationSpeed * deltaTime;
     }
 
     public void updateRotation() {
-        if (velocity.x != 0 || velocity.y != 0) {
-            rotation = (float) Math.atan2(velocity.y, velocity.x) * 180 / (float) Math.PI;
-        }
+        // Adjust rotation speed based on the magnitude of velocity
+        float speedMagnitude = velocity.len();
+        rotationSpeed = speedMagnitude * 0.1f; // Adjust the factor as needed
     }
 
     public float getRotation() {

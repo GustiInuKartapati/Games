@@ -141,6 +141,7 @@ public class Spaceship extends ApplicationAdapter {
 							gameTime = 0;
 
 							System.out.println("Game restarted!");
+							ship.setPosition(screenWidth / 2 - ship.getWidth() / 2, screenHeight / 2 - ship.getHeight() / 2);
 							isGamePaused = false;
 						}
 					}

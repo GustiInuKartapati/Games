@@ -3,6 +3,7 @@ package com.spaceship.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +28,8 @@ public class Spaceship extends ApplicationAdapter {
 	private Stage stage;
 	private Skin skin;
 	private boolean isGamePaused;
+	private float gameTime = 0;
+	private Label timerLabel;
 
     @Override
     public void create() {
@@ -41,6 +44,10 @@ public class Spaceship extends ApplicationAdapter {
 		stage = new Stage();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		Gdx.input.setInputProcessor(stage);
+
+		timerLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE)); // Initialize the label
+		timerLabel.setPosition(screenWidth / 2 - timerLabel.getWidth() / 2, (screenHeight - timerLabel.getHeight())-10); // Position the label
+        stage.addActor(timerLabel); // Add the label to the stage
 
 		isGamePaused = false;
     }
@@ -58,6 +65,9 @@ public class Spaceship extends ApplicationAdapter {
 		if (!isGamePaused) {
 			
 			float deltaTime = Gdx.graphics.getDeltaTime();
+			gameTime += deltaTime;
+
+			timerLabel.setText("Time: " + gameTime); // Update the label text
 
 			if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 				ship.velocity.y = ship.getSpeed();
@@ -66,6 +76,7 @@ public class Spaceship extends ApplicationAdapter {
 			} else {
 				ship.velocity.y = 0;
 			}
+
 
 			if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 				ship.velocity.x = -ship.getSpeed();
@@ -99,6 +110,8 @@ public class Spaceship extends ApplicationAdapter {
 			if (collisionDetected) {
 				isGamePaused = true;
 
+				final float finalGameTime = gameTime;
+
 				Label.LabelStyle labelStyle = new Label.LabelStyle();
 				labelStyle.font = new BitmapFont();
 				labelStyle.font.getData().setScale(2); // Set the scale of the font
@@ -120,12 +133,15 @@ public class Spaceship extends ApplicationAdapter {
 							meteors.clear();
 							createMeteors();
 
+							gameTime = 0;
+
 							System.out.println("Game restarted!");
 							isGamePaused = false;
 						}
 					}
 				};
-
+				restartDialog.text(new Label("You survived for " + finalGameTime + " seconds.", labelStyle));
+				restartDialog.getContentTable().row();
 				restartDialog.text(new Label("Do you want to restart the game?", labelStyle));
 				restartDialog.button(new TextButton("Yes", textButtonStyle), true);
 				restartDialog.button(new TextButton("No", textButtonStyle), false);

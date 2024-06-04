@@ -18,11 +18,11 @@ public class ship {
         this.velocity = new Vector2();
         // Manually specify dimensions
         this.width = 64;  // Adjust as needed
-        this.height = 32; // Adjust as needed
+        this.height = 64; // Adjust as needed
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(getX(), getY(), 55, 25);
+        return new Rectangle(getX(), getY(), 50, 35);
     }
 
     public Texture getTexture() {

@@ -15,11 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spaceship extends ApplicationAdapter {
+public class Spaceship extends Game {
     private SpriteBatch batch;
     private ship ship;
     private List<meteor> meteors;
@@ -31,9 +32,13 @@ public class Spaceship extends ApplicationAdapter {
 	private float gameTime = 0;
 	private Label timerLabel;
 	private Texture backgroundTexture;
+	// private MainMenu mainMenuScreen;
 
     @Override
     public void create() {
+		// mainMenuScreen = new MainMenu(this);
+        // setScreen(mainMenuScreen);
+
 		backgroundTexture = new Texture("background.jpg");
         batch = new SpriteBatch();
         ship = new ship(new Texture("ship.png"));
@@ -143,6 +148,8 @@ public class Spaceship extends ApplicationAdapter {
 							System.out.println("Game restarted!");
 							ship.setPosition(screenWidth / 2 - ship.getWidth() / 2, screenHeight / 2 - ship.getHeight() / 2);
 							isGamePaused = false;
+						} else if (object.equals(false)) {
+							Gdx.app.exit();
 						}
 					}
 				};

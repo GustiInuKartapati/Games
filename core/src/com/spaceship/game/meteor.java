@@ -33,7 +33,7 @@ public class meteor {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(getX(), getY(), 25, 25);
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
     public Texture getTexture() {

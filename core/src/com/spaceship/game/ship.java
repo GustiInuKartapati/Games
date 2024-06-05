@@ -22,7 +22,7 @@ public class ship {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(getX(), getY(), 50, 35);
+        return new Rectangle(getX(), getY(), 28, 35);
     }
 
     public Texture getTexture() {

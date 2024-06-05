@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Game;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class Spaceship extends Game {
 	private float gameTime = 0;
 	private Label timerLabel;
 	private Texture backgroundTexture;
+	private Music backgroundMusic;
+	private Music gameoverSound;
 	// private MainMenu mainMenuScreen;
 
     @Override
@@ -57,6 +60,12 @@ public class Spaceship extends Game {
 		timerLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE)); // Initialize the label
 		timerLabel.setPosition(screenWidth / 2 - timerLabel.getWidth() / 2, (screenHeight - timerLabel.getHeight())-10); // Position the label
         stage.addActor(timerLabel); // Add the label to the stage
+
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background_music.mp3"));
+        backgroundMusic.setLooping(true); // Set to loop the music
+        backgroundMusic.play(); // Play the music
+
+		gameoverSound = Gdx.audio.newMusic(Gdx.files.internal("gameover_sound.wav"));
 
 		isGamePaused = false;
     }
@@ -120,6 +129,10 @@ public class Spaceship extends Game {
 			if (collisionDetected) {
 				isGamePaused = true;
 
+
+				backgroundMusic.stop();
+				gameoverSound.play();
+
 				final float finalGameTime = gameTime;
 
 				Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -148,6 +161,7 @@ public class Spaceship extends Game {
 							System.out.println("Game restarted!");
 							ship.setPosition(screenWidth / 2 - ship.getWidth() / 2, screenHeight / 2 - ship.getHeight() / 2);
 							isGamePaused = false;
+							backgroundMusic.play();
 						} else if (object.equals(false)) {
 							Gdx.app.exit();
 						}
@@ -159,6 +173,8 @@ public class Spaceship extends Game {
 				restartDialog.button(new TextButton("Yes", textButtonStyle), true);
 				restartDialog.button(new TextButton("No", textButtonStyle), false);
 				restartDialog.show(stage);
+
+
 			}
 			// Debug output for ship and meteor positions and sizes
 			// System.out.println("Ship position: (" + ship.getX() + ", " + ship.getY() + ")");
@@ -198,6 +214,12 @@ public class Spaceship extends Game {
     public void dispose() {
         batch.dispose();
 		backgroundTexture.dispose();
+		
+		if (backgroundMusic != null) {
+			backgroundMusic.dispose();
+		}
+
+		gameoverSound.dispose();
 
 		// stage.dispose();
 		// skin.dispose();
